@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
 <nta>
-	<declaration>// Place global declarations here.</declaration>
+	<declaration>// Place global declarations here.
+chan consoleTransferStart;</declaration>
 	<template>
 		<name>console</name>
 		<declaration>clock x;</declaration>
@@ -39,6 +40,7 @@
 		<transition>
 			<source ref="id0"/>
 			<target ref="id1"/>
+			<label kind="synchronisation" x="-398" y="-208">consoleTransferStart!</label>
 		</transition>
 	</template>
 	<template>
@@ -78,6 +80,7 @@
 		<transition>
 			<source ref="id3"/>
 			<target ref="id4"/>
+			<label kind="synchronisation" x="-364" y="-199">consoleTransferStart?</label>
 		</transition>
 	</template>
 	<template>
@@ -118,6 +121,7 @@
 		<transition>
 			<source ref="id6"/>
 			<target ref="id7"/>
+			<label kind="synchronisation" x="-373" y="-199">consoleTransferStart?</label>
 		</transition>
 	</template>
 	<template>
@@ -157,6 +161,7 @@
 		<transition>
 			<source ref="id9"/>
 			<target ref="id10"/>
+			<label kind="synchronisation" x="-381" y="-178">consoleTransferStart?</label>
 		</transition>
 	</template>
 	<system>// Place template instantiations here.
