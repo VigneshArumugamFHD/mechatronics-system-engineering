@@ -60,8 +60,8 @@ bool receivedack = false;
 bool acknowledge = false;
 bool checkpassed = false;
 bool nodereached = false;</declaration>
-		<location id="id5" x="-170" y="-68">
-			<name x="-153" y="-85">transfer</name>
+		<location id="id5" x="-178" y="-76">
+			<name x="-161" y="-93">transfer</name>
 		</location>
 		<location id="id6" x="-425" y="-187">
 			<name x="-435" y="-221">hibernate</name>
