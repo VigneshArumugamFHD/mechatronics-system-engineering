@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+chan consoleTransferStart,consoleReceiveStart;
+
+int NumofBales = 10;
+
+bool fieldupdated=true;
+bool processdone=true;</declaration>
+	<template>
+		<name>server</name>
+		<declaration>clock x;</declaration>
+		<location id="id0" x="-705" y="-195">
+			<name x="-715" y="-229">begin</name>
+		</location>
+		<location id="id1" x="17" y="-195">
+			<name x="7" y="-229">transfer</name>
+		</location>
+		<location id="id2" x="-195" y="-42">
+			<name x="-205" y="-76">receive</name>
+		</location>
+		<location id="id3" x="-195" y="-195">
+			<name x="-205" y="-229">transferready</name>
+		</location>
+		<location id="id4" x="-535" y="-195">
+			<name x="-545" y="-229">Processing</name>
+		</location>
+		<init ref="id0"/>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id4"/>
+			<nail x="-535" y="-42"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id3"/>
+			<label kind="guard" x="-527" y="-170">processdone ==true &amp;&amp; NumofBales&gt;0 &amp;&amp; vehicle.available == true</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id4"/>
+			<label kind="guard" x="-688" y="-195">fieldupdated == true</label>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-161" y="-195">consoleTransferStart!</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="synchronisation" x="-127" y="-42">consoleReceiveStart?</label>
+			<nail x="17" y="-42"/>
+		</transition>
+	</template>
+	<template>
+		<name>vehicle</name>
+		<declaration>clock x;
+
+bool available = true;
+bool receivedack = false;
+bool acknowledge = false;
+bool checkpassed = false;
+bool nodereached = false;</declaration>
+		<location id="id5" x="-170" y="51">
+			<name x="-212" y="17">returning</name>
+		</location>
+		<location id="id6" x="-416" y="-187">
+			<name x="-426" y="-221">sleep</name>
+		</location>
+		<location id="id7" x="-170" y="-187">
+			<name x="-180" y="-221">data_receive</name>
+		</location>
+		<location id="id8" x="161" y="-187">
+			<name x="144" y="-221">check</name>
+		</location>
+		<location id="id9" x="161" y="-76">
+			<name x="178" y="-84">going</name>
+		</location>
+		<location id="id10" x="161" y="51">
+			<name x="178" y="42">picking</name>
+		</location>
+		<location id="id11" x="-416" y="51">
+			<name x="-484" y="68">data_transfer</name>
+		</location>
+		<init ref="id6"/>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id6"/>
+			<label kind="assignment" x="-408" y="-59">available=true</label>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id11"/>
+		</transition>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id10"/>
+			<label kind="assignment" x="170" y="-25">nodereached =true</label>
+		</transition>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id9"/>
+			<label kind="assignment" x="170" y="-136">checkpassed = true</label>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id8"/>
+			<label kind="assignment" x="-68" y="-187">acknowledge = true,
+receivedack = true,
+available = false</label>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id5"/>
+			<label kind="synchronisation" x="-93" y="51">consoleReceiveStart!</label>
+			<label kind="assignment" x="-76" y="34">NumofBales-=1</label>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="-374" y="-204">consoleTransferStart?</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+smallvehicle =  vehicle();
+mediumvehicle=  vehicle();
+largevehicle =  vehicle();
+
+
+// List one or more processes to be composed into a system.
+system server,smallvehicle,mediumvehicle,largevehicle;</system>
+	<queries>
+		<query>
+			<formula>A[] not deadlock</formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>
