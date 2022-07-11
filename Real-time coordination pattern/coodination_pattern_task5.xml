@@ -4,7 +4,7 @@
 	<declaration>// Place global declarations here.
 chan consoleTransferStart,consoleReceiveStart,server_available_chan;
 
-int NumofBales = 30;
+int NumofBales = 10;
 const int NumofVehicle = 3;
 
 int Availablevehicleindex = 0;
@@ -41,7 +41,7 @@ void taskremaining_check()
 		</location>
 		<location id="id2" x="-195" y="-42">
 			<name x="-212" y="-34">receive</name>
-			<label kind="invariant" x="-195" y="-17">x&gt;3</label>
+			<label kind="invariant" x="-204" y="-17">x&gt;5</label>
 		</location>
 		<location id="id3" x="-195" y="-195">
 			<name x="-263" y="-229">transferready</name>
@@ -57,6 +57,12 @@ void taskremaining_check()
 		</location>
 		<init ref="id0"/>
 		<transition>
+			<source ref="id5"/>
+			<target ref="id4"/>
+			<label kind="assignment" x="-1087" y="-114">NumofBales = 10</label>
+			<nail x="-1105" y="-153"/>
+		</transition>
+		<transition>
 			<source ref="id6"/>
 			<target ref="id4"/>
 			<label kind="assignment" x="-790" y="102">taskremaining_check()</label>
@@ -71,13 +77,14 @@ void taskremaining_check()
 		<transition>
 			<source ref="id3"/>
 			<target ref="id2"/>
-			<label kind="guard" x="-187" y="-136">x&gt;10</label>
-			<label kind="assignment" x="-195" y="-118">server_available = true</label>
+			<label kind="assignment" x="-187" y="-136">server_available = true,
+x=0</label>
 		</transition>
 		<transition>
 			<source ref="id4"/>
 			<target ref="id5"/>
 			<label kind="guard" x="-960" y="-161">NumofBales == 0 &amp;&amp; taskremaining==false</label>
+			<nail x="-697" y="-93"/>
 		</transition>
 		<transition>
 			<source ref="id2"/>
@@ -105,7 +112,8 @@ taskremaining_check()</label>
 		<transition>
 			<source ref="id1"/>
 			<target ref="id2"/>
-			<label kind="assignment" x="-160" y="-42">server_available = true</label>
+			<label kind="assignment" x="-110" y="-42">server_available = true,
+x=0</label>
 			<nail x="17" y="-42"/>
 			<nail x="-178" y="-42"/>
 		</transition>
@@ -133,29 +141,25 @@ void vehicletaskremainingupdate(bool y)
 }</declaration>
 		<location id="id7" x="-170" y="51">
 			<name x="-212" y="17">returning</name>
-			<label kind="invariant" x="-180" y="68">x&gt;23</label>
 		</location>
 		<location id="id8" x="-416" y="-187">
 			<name x="-426" y="-221">sleep</name>
 		</location>
 		<location id="id9" x="-170" y="-187">
 			<name x="-180" y="-221">data_receive</name>
-			<label kind="invariant" x="-180" y="-170">x&gt;2</label>
 		</location>
 		<location id="id10" x="161" y="-187">
 			<name x="144" y="-221">check</name>
-			<label kind="invariant" x="178" y="-195">x&gt;5</label>
 		</location>
 		<location id="id11" x="161" y="-76">
 			<name x="178" y="-84">going</name>
-			<label kind="invariant" x="119" y="-85">x&gt;12</label>
 		</location>
 		<location id="id12" x="161" y="51">
 			<name x="178" y="42">picking</name>
-			<label kind="invariant" x="151" y="68">x&gt;16</label>
 		</location>
 		<location id="id13" x="-416" y="51">
 			<name x="-518" y="51">data_transfer</name>
+			<label kind="invariant" x="-426" y="68">x&gt;1</label>
 		</location>
 		<location id="id14" x="-297" y="153">
 			<name x="-357" y="153">waiting</name>
@@ -178,14 +182,15 @@ void vehicletaskremainingupdate(bool y)
 		<transition>
 			<source ref="id14"/>
 			<target ref="id14"/>
-			<label kind="guard" x="-272" y="212">server_available == false</label>
-			<nail x="-178" y="195"/>
-			<nail x="-323" y="212"/>
+			<label kind="guard" x="-365" y="221">server_available == false</label>
+			<nail x="-246" y="221"/>
+			<nail x="-357" y="221"/>
 		</transition>
 		<transition>
 			<source ref="id14"/>
 			<target ref="id13"/>
 			<label kind="guard" x="-484" y="119">server_available == true</label>
+			<label kind="assignment" x="-398" y="102">x=0</label>
 		</transition>
 		<transition>
 			<source ref="id7"/>
@@ -201,6 +206,7 @@ void vehicletaskremainingupdate(bool y)
 			<source ref="id7"/>
 			<target ref="id13"/>
 			<label kind="guard" x="-374" y="51">server_available == true</label>
+			<label kind="assignment" x="-314" y="34">x=0</label>
 		</transition>
 		<transition>
 			<source ref="id11"/>
@@ -241,6 +247,10 @@ system server,smallvehicle,mediumvehicle,largevehicle;</system>
 	<queries>
 		<query>
 			<formula>A[] not deadlock</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula></formula>
 			<comment></comment>
 		</query>
 	</queries>
